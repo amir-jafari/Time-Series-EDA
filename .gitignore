@@ -33,6 +33,9 @@ htmlcov/
 *.swp
 *.swo
 
+# Session handoff — local only, never committed
+HANDOFF.md
+
 # Docs build
 docs/_build/
 
