@@ -41,3 +41,8 @@ docs/_build/
 
 # macOS
 .DS_Store
+# Notebook outputs (generated at runtime)
+notebooks/*.png
+notebooks/*.html
+notebooks/_build_notebooks.py
+notebooks/.ipynb_checkpoints/
