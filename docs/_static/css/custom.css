@@ -1,0 +1,302 @@
+/*
+ * tseda Sphinx documentation — custom overrides for sphinx_rtd_theme.
+ *
+ * Reference site: https://amir-jafari.github.io/TimeSeries/
+ * Base theme: sphinx_rtd_theme
+ */
+
+/* -------------------------------------------------------------------------
+ * Brand colours
+ * ---------------------------------------------------------------------- */
+:root {
+    --tseda-blue:       #2c3e50;   /* header / sidebar background */
+    --tseda-accent:     #2980b9;   /* links, highlights */
+    --tseda-accent-alt: #3498db;   /* hover states */
+    --tseda-light-bg:   #f8f9fa;   /* subtle section backgrounds */
+    --tseda-border:     #e1e4e8;   /* dividers */
+    --tseda-text:       #2c3e50;   /* body text */
+    --tseda-code-bg:    #282c34;   /* code block background (One Dark) */
+    --tseda-code-text:  #abb2bf;   /* code block default text */
+}
+
+/* -------------------------------------------------------------------------
+ * Global typography
+ * ---------------------------------------------------------------------- */
+body {
+    font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial,
+                 sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--tseda-text);
+}
+
+/* -------------------------------------------------------------------------
+ * Header / top navigation bar
+ * ---------------------------------------------------------------------- */
+.wy-nav-top {
+    background: var(--tseda-blue) !important;
+}
+
+.wy-nav-top a {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+/* -------------------------------------------------------------------------
+ * Sidebar
+ * ---------------------------------------------------------------------- */
+.wy-side-nav-search {
+    background: var(--tseda-blue) !important;
+}
+
+.wy-side-nav-search input[type="text"] {
+    border-radius: 4px;
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.wy-nav-side {
+    background: var(--tseda-blue) !important;
+}
+
+/* Section headings in the sidebar */
+.wy-menu-vertical p.caption {
+    color: #b0bec5 !important;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 1.2em;
+}
+
+/* Sidebar links */
+.wy-menu-vertical a {
+    color: #cfd8dc !important;
+}
+
+.wy-menu-vertical a:hover,
+.wy-menu-vertical li.current > a {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+}
+
+/* Active / current page highlight */
+.wy-menu-vertical li.current > a,
+.wy-menu-vertical li.on a {
+    border-left: 3px solid var(--tseda-accent) !important;
+    color: #ffffff !important;
+}
+
+/* -------------------------------------------------------------------------
+ * Content area
+ * ---------------------------------------------------------------------- */
+.wy-nav-content {
+    max-width: 900px;
+}
+
+/* Page headings */
+.rst-content h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    border-bottom: 3px solid var(--tseda-accent);
+    padding-bottom: 0.3em;
+    margin-bottom: 0.8em;
+    color: var(--tseda-blue);
+}
+
+.rst-content h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--tseda-border);
+    padding-bottom: 0.2em;
+    color: var(--tseda-blue);
+}
+
+.rst-content h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--tseda-blue);
+}
+
+/* -------------------------------------------------------------------------
+ * Hyperlinks
+ * ---------------------------------------------------------------------- */
+a {
+    color: var(--tseda-accent);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--tseda-accent-alt);
+    text-decoration: underline;
+}
+
+/* -------------------------------------------------------------------------
+ * Code blocks — One Dark style
+ * ---------------------------------------------------------------------- */
+.rst-content div[class^="highlight"],
+.rst-content pre {
+    background: var(--tseda-code-bg) !important;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+    margin: 1em 0;
+}
+
+.rst-content div[class^="highlight"] pre,
+.rst-content pre {
+    color: var(--tseda-code-text) !important;
+    font-family: "Fira Code", "Cascadia Code", "Source Code Pro",
+                 "Courier New", monospace;
+    font-size: 0.88rem;
+    line-height: 1.55;
+    padding: 1em 1.2em;
+}
+
+/* Inline code */
+.rst-content code,
+.rst-content tt {
+    background: var(--tseda-light-bg);
+    border: 1px solid var(--tseda-border);
+    border-radius: 3px;
+    padding: 0.1em 0.4em;
+    font-size: 0.88em;
+    color: #c0392b;
+    font-family: "Fira Code", "Source Code Pro", monospace;
+}
+
+/* Copy button (sphinx-copybutton) */
+button.copybtn {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 4px !important;
+    color: #abb2bf !important;
+}
+
+button.copybtn:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+}
+
+/* -------------------------------------------------------------------------
+ * API documentation (autodoc / numpydoc)
+ * ---------------------------------------------------------------------- */
+
+/* Class / function signature boxes */
+.rst-content dl.class > dt,
+.rst-content dl.function > dt,
+.rst-content dl.method > dt,
+.rst-content dl.attribute > dt {
+    background: #eaf3fb !important;
+    border-left: 4px solid var(--tseda-accent) !important;
+    border-radius: 0 4px 4px 0;
+    padding: 0.5em 0.8em;
+    font-family: "Fira Code", "Source Code Pro", monospace;
+    font-size: 0.92rem;
+    color: var(--tseda-blue);
+}
+
+/* Parameter / return type label styling */
+.rst-content dl.field-list > dt {
+    font-weight: 700;
+    color: var(--tseda-blue);
+}
+
+/* "New in version" / "Changed in version" notices */
+.rst-content .versionadded,
+.rst-content .versionchanged,
+.rst-content .deprecated {
+    border-left: 4px solid var(--tseda-accent);
+    padding: 0.4em 0.8em;
+    margin: 0.8em 0;
+    background: var(--tseda-light-bg);
+    border-radius: 0 4px 4px 0;
+}
+
+/* -------------------------------------------------------------------------
+ * Admonitions (Note, Warning, Tip, etc.)
+ * ---------------------------------------------------------------------- */
+.rst-content .note,
+.rst-content .tip,
+.rst-content .important {
+    border-left: 4px solid var(--tseda-accent);
+    border-radius: 0 4px 4px 0;
+}
+
+.rst-content .warning,
+.rst-content .caution {
+    border-left: 4px solid #e74c3c;
+    border-radius: 0 4px 4px 0;
+}
+
+/* -------------------------------------------------------------------------
+ * Tables
+ * ---------------------------------------------------------------------- */
+.rst-content table.docutils {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.92rem;
+}
+
+.rst-content table.docutils th {
+    background: var(--tseda-blue);
+    color: #ffffff;
+    padding: 0.5em 0.8em;
+    text-align: left;
+}
+
+.rst-content table.docutils td {
+    padding: 0.45em 0.8em;
+    border-bottom: 1px solid var(--tseda-border);
+}
+
+.rst-content table.docutils tr:nth-child(even) td {
+    background: var(--tseda-light-bg);
+}
+
+/* -------------------------------------------------------------------------
+ * Navigation buttons (Prev / Next)
+ * ---------------------------------------------------------------------- */
+.rst-content .rst-footer-buttons .btn {
+    background: var(--tseda-accent);
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5em 1.2em;
+    font-weight: 600;
+    transition: background 0.15s ease;
+}
+
+.rst-content .rst-footer-buttons .btn:hover {
+    background: var(--tseda-accent-alt);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* -------------------------------------------------------------------------
+ * Breadcrumbs
+ * ---------------------------------------------------------------------- */
+.wy-breadcrumbs li a {
+    color: var(--tseda-accent);
+}
+
+/* -------------------------------------------------------------------------
+ * Search box highlight
+ * ---------------------------------------------------------------------- */
+.highlighted {
+    background: #fff176;
+    border-radius: 2px;
+    padding: 0 2px;
+}
+
+/* -------------------------------------------------------------------------
+ * Responsive — compact sidebar on narrow screens
+ * ---------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .wy-nav-content {
+        max-width: 100%;
+    }
+
+    .rst-content h1 { font-size: 1.6rem; }
+    .rst-content h2 { font-size: 1.3rem; }
+}

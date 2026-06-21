@@ -1,0 +1,115 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# ---------------------------------------------------------------------------
+# Project metadata
+# ---------------------------------------------------------------------------
+[project]
+name = "tseda"
+version = "0.1.0"
+description = "Comprehensive Time Series Exploratory Data Analysis toolkit"
+readme = "README.rst"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Amirhossein Jafari", email = "ajafari@gwu.edu" },
+]
+keywords = [
+    "time series",
+    "eda",
+    "exploratory data analysis",
+    "forecasting",
+    "statistics",
+    "anomaly detection",
+    "seasonality",
+    "decomposition",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.9"
+
+# Core runtime dependencies — deliberately minimal.
+dependencies = [
+    "numpy>=1.23",
+    "pandas>=1.5",
+    "scipy>=1.9",
+    "matplotlib>=3.6",
+]
+
+# ---------------------------------------------------------------------------
+# Optional dependency groups
+# ---------------------------------------------------------------------------
+[project.optional-dependencies]
+# statsmodels unlocks ADF, KPSS, seasonal decompose, etc.
+stats = ["statsmodels>=0.14"]
+
+dev = [
+    "pytest>=7.4",
+    "pytest-cov>=4.1",
+    "black>=24.0",
+    "ruff>=0.4",
+    "mypy>=1.9",
+    "pandas-stubs",
+]
+
+docs = [
+    "sphinx>=7.2",
+    "sphinx-rtd-theme>=2.0",
+    "numpydoc>=1.7",
+    "sphinx-autodoc-typehints>=2.0",
+    "sphinx-copybutton>=0.5",
+]
+
+# Convenience meta-extra that pulls everything.
+all = ["tseda[stats,dev,docs]"]
+
+# ---------------------------------------------------------------------------
+# URLs
+# ---------------------------------------------------------------------------
+[project.urls]
+Homepage       = "https://github.com/amir-jafari/Time-Series-EDA"
+Documentation  = "https://amir-jafari.github.io/Time-Series-EDA"
+Repository     = "https://github.com/amir-jafari/Time-Series-EDA"
+Issues         = "https://github.com/amir-jafari/Time-Series-EDA/issues"
+Changelog      = "https://github.com/amir-jafari/Time-Series-EDA/blob/main/CHANGELOG.rst"
+
+# ---------------------------------------------------------------------------
+# Tool configurations
+# ---------------------------------------------------------------------------
+[tool.setuptools.packages.find]
+where   = ["."]
+include = ["tseda*"]
+
+[tool.black]
+line-length     = 88
+target-version  = ["py39", "py310", "py311", "py312"]
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "ANN"]
+ignore = ["ANN101", "ANN102"]
+
+[tool.mypy]
+python_version      = "3.9"
+warn_return_any     = true
+warn_unused_configs = true
+strict              = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts   = "--cov=tseda --cov-report=term-missing -v"
