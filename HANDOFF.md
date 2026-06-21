@@ -106,7 +106,7 @@ tseda/
 | 3 | `statistics` | ✅ Complete | 223/223 pass (all) | 86 % overall |
 | 4 | `decomposition` | ✅ Complete | 276/276 pass (all) | 86 % overall |
 | 5 | `seasonality` | ✅ Complete | 325/325 pass (all) | 87 % overall |
-| 6 | `anomaly` | ⬜ Todo | — | — |
+| 6 | `anomaly` | ✅ Complete | 367/367 pass (all) | 88 % overall |
 | 7 | `changepoint` | ⬜ Todo | — | — |
 | 8 | `features` | ⬜ Todo | — | — |
 | 9 | `forecastability` | ⬜ Todo | — | — |
@@ -399,30 +399,61 @@ docs/api/seasonality.rst
 
 ---
 
-## Phase 6 — `tseda/anomaly/` (Next)
+## Phase 6 — `tseda/anomaly/` (Complete)
 
-### Planned files
+### Files created
 ```
-tseda/anomaly/__init__.py
-tseda/anomaly/detector.py   — AnomalyDetector
+tseda/anomaly/__init__.py          — re-exports 2 public symbols
+tseda/anomaly/detector.py          — AnomalyReport, AnomalyDetector
 tests/test_anomaly/__init__.py
-tests/test_anomaly/test_detector.py
+tests/test_anomaly/test_detector.py — 42 tests
 docs/api/anomaly.rst
 ```
 
-### Design decisions for Phase 6
-- Detect **point anomalies** (isolated spikes) and **contextual anomalies**
-  (values that are surprising given the local context).
-- Methods (all pure numpy/scipy):
-  1. **IQR rolling** — rolling IQR fence; flags points outside local quartiles.
-  2. **Z-score rolling** — rolling mean ± k×std.
-  3. **STL residual** — STL decompose then flag large residuals via IQR/MAD.
-  4. **GESD** — existing global GESD from quality module (re-used).
-- `AnomalyReport` dataclass: `mask`, `indices`, `timestamps`, `values`,
-  `scores` (continuous anomaly score 0→1), `method`, `n_anomalies`.
-- `AnomalyDetector.label(ts, report) → TimeSeries` returns a TimeSeries of
-  0/1 anomaly labels aligned with the original index.
+### Key implementation notes
+- `AnomalyReport`: `mask`, `indices`, `timestamps`, `values`, `scores` (0→1),
+  `method`, `n_anomalies`.
+- `rolling_iqr(window, k)`: pandas rolling Q1/Q3 + IQR fence; score = excess/IQR.
+- `rolling_z(window, threshold)`: pandas rolling mean/std; score = (|z|−threshold)/threshold.
+- `stl_residual(period, residual_method, k)`: delegates to `STLDecomposer`; then
+  flags residuals via IQR/MAD/Z. Period auto-inferred from `ts.freq`.
+- `gesd(alpha, max_outliers)`: re-uses `quality.OutlierDetector.gesd`; scores = |z|/max_z.
+- `remove(ts, report)` → NaN at anomaly positions.
+- `label(ts, report)` → 0/1 TimeSeries named `"{name}_anomaly_label"`.
+- All rolling methods use `center=True` by default (look at surrounding context).
+
+## Git / GitHub
+
+- Remote: `git@github.com:amir-jafari/Time-Series-EDA.git`
+  (HTTPS: `https://github.com/amir-jafari/Time-Series-EDA.git`)
+- Branch: `main`
+- Push command (from repo root): `git push origin main`
+- After every phase, stage all new/changed files and push.
+- `.gitignore` tracks `docs/api/*.rst` (manually written, not auto-generated).
 
 ---
 
-*Last updated: Phase 5 complete — 2026-06-21*
+## Phase 7 — `tseda/changepoint/` (Next)
+
+### Planned files
+```
+tseda/changepoint/__init__.py
+tseda/changepoint/detector.py   — ChangepointDetector
+tests/test_changepoint/__init__.py
+tests/test_changepoint/test_detector.py
+docs/api/changepoint.rst
+```
+
+### Design decisions for Phase 7
+- Detect structural breaks (mean shift, variance shift, trend change).
+- Methods (pure numpy/scipy):
+  1. **CUSUM** — Cumulative sum control chart for mean shift.
+  2. **BOCPD-lite** — Bayesian online changepoint detection (simplified).
+  3. **Variance ratio** — sliding-window F-test for variance shifts.
+- `ChangepointReport`: `changepoints` (list of timestamps), `n_changepoints`,
+  `scores` (continuous score per observation), `method`.
+- Pure numpy fallback for all methods.
+
+---
+
+*Last updated: Phase 6 complete + pushed to GitHub — 2026-06-21*
