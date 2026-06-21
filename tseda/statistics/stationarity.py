@@ -397,9 +397,12 @@ class StationarityTester:
 
         # --- try statsmodels fast path ---
         try:
+            import warnings as _w
             from statsmodels.tsa.stattools import adfuller as sm_adf
 
-            res = sm_adf(x, maxlag=ml, regression=regression, autolag="AIC")
+            with _w.catch_warnings():
+                _w.simplefilter("ignore")
+                res = sm_adf(x, maxlag=ml, regression=regression, autolag="AIC")
             stat, p_val, n_lags = float(res[0]), float(res[1]), int(res[2])
             cv = {k: float(v) for k, v in res[4].items()}
         except ImportError:
@@ -483,9 +486,12 @@ class StationarityTester:
 
         # --- try statsmodels fast path ---
         try:
+            import warnings as _w
             from statsmodels.tsa.stattools import kpss as sm_kpss
 
-            stat, p_val, n_lags, cv_dict = sm_kpss(x, regression=regression)
+            with _w.catch_warnings():
+                _w.simplefilter("ignore")
+                stat, p_val, n_lags, cv_dict = sm_kpss(x, regression=regression)
             stat    = float(stat)
             p_val   = float(p_val)
             n_lags  = int(n_lags)
