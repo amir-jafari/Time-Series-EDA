@@ -35,7 +35,6 @@ htmlcov/
 
 # Docs build
 docs/_build/
-docs/api/*.rst
 
 # macOS
 .DS_Store
