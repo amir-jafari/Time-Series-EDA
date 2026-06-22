@@ -53,3 +53,5 @@ notebooks/*.png
 notebooks/*.html
 notebooks/_build_notebooks.py
 notebooks/.ipynb_checkpoints/
+
+PUBLISHING_INSTRUCTIONS.md
