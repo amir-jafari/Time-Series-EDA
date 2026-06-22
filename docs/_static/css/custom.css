@@ -290,6 +290,31 @@ button.copybtn:hover {
 }
 
 /* -------------------------------------------------------------------------
+ * Sidebar expand / collapse + icons
+ * The RTD theme renders these as .toctree-expand elements inside <li>.
+ * Without an explicit color they fall back to the dark sidebar background
+ * and become invisible.
+ * ---------------------------------------------------------------------- */
+.wy-menu-vertical li span.toctree-expand,
+.wy-menu-vertical li button.toctree-expand {
+    color: #90a4ae !important;   /* visible light-blue-grey on dark bg */
+    opacity: 1 !important;
+    font-weight: 700;
+}
+
+.wy-menu-vertical li.current span.toctree-expand,
+.wy-menu-vertical li.current button.toctree-expand,
+.wy-menu-vertical li.current > a span.toctree-expand {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+.wy-menu-vertical li span.toctree-expand:hover,
+.wy-menu-vertical li button.toctree-expand:hover {
+    color: #ffffff !important;
+}
+
+/* -------------------------------------------------------------------------
  * Responsive — compact sidebar on narrow screens
  * ---------------------------------------------------------------------- */
 @media (max-width: 768px) {
