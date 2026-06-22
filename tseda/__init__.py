@@ -53,7 +53,7 @@ from tseda.core import (
 )
 
 try:
-    __version__: str = version("tseda")
+    __version__: str = version("timeseries-eda")
 except PackageNotFoundError:
     __version__ = "0.0.0.dev0"
 
