@@ -2,8 +2,6 @@ tseda.changepoint
 =================
 
 .. automodule:: tseda.changepoint
-   :members:
-   :undoc-members:
 
 Report
 ------

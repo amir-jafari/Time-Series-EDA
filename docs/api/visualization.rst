@@ -2,8 +2,6 @@ tseda.visualization
 ===================
 
 .. automodule:: tseda.visualization
-   :members:
-   :undoc-members:
 
 Style
 -----

@@ -20,12 +20,9 @@ release   = "0.1.0"
 # ---------------------------------------------------------------------------
 extensions = [
     "sphinx.ext.autodoc",           # auto-generate docs from docstrings
-    "sphinx.ext.autosummary",       # generate summary tables
     "sphinx.ext.viewcode",          # add [source] links
     "sphinx.ext.intersphinx",       # cross-ref to numpy / pandas / scipy docs
     "sphinx.ext.napoleon",          # NumPy & Google docstring support
-    "numpydoc",                     # NumPy-style docstring rendering
-    "sphinx_autodoc_typehints",     # type hints in signature / description
     "sphinx_copybutton",            # copy button on code blocks
     "sphinx.ext.mathjax",           # LaTeX math rendering
     "sphinx.ext.githubpages",       # .nojekyll file for GitHub Pages
@@ -42,17 +39,10 @@ autodoc_default_options = {
     "undoc-members":    False,
     "show-inheritance": True,
     "special-members":  "__init__, __repr__, __len__, __contains__, __getitem__",
+    "exclude-members":  "maketrans",
 }
 autodoc_typehints        = "description"   # types in Parameters / Returns sections
 autodoc_typehints_format = "short"
-autosummary_generate     = True
-
-# ---------------------------------------------------------------------------
-# numpydoc
-# ---------------------------------------------------------------------------
-numpydoc_show_class_members    = True
-numpydoc_class_members_toctree = False
-numpydoc_attributes_as_param_list = True
 
 # ---------------------------------------------------------------------------
 # Intersphinx — links to upstream package docs
@@ -82,7 +72,6 @@ html_theme_options = {
 
     # Branding
     "logo_only":             False,
-    "display_version":       True,
     "prev_next_buttons_location": "bottom",
     "style_external_links":  True,
 

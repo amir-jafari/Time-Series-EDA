@@ -2,8 +2,6 @@ tseda.report
 ============
 
 .. automodule:: tseda.report
-   :members:
-   :undoc-members:
 
 HTML Report
 -----------

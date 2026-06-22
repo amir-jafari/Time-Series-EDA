@@ -633,7 +633,7 @@ class StationarityTester:
         +-------+--------+---------------------------------------------+
         | stat. | non-s. | Trend stationary — consider detrending      |
         +-------+--------+---------------------------------------------+
-        | non-s.| stat.  | Difference stationary — consider differencing|
+        | non-s.| stat.  | Difference stationary — try differencing    |
         +-------+--------+---------------------------------------------+
         | non-s.| non-s. | Strong evidence of non-stationarity         |
         +-------+--------+---------------------------------------------+

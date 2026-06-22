@@ -85,7 +85,7 @@ def plot_acf_heatmap(
     """Rolling-window ACF heatmap — lag on y-axis, time window on x-axis.
 
     For each overlapping window the ACF is computed and displayed as a
-    colour column.  High |ACF| at a particular lag is visible as a persistent
+    colour column.  High ACF magnitude at a particular lag is visible as a persistent
     horizontal band.
 
     Parameters

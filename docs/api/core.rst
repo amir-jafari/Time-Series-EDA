@@ -2,14 +2,11 @@ tseda.core
 ==========
 
 .. automodule:: tseda.core
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 TimeSeries
 ----------
 
-.. autoclass:: tseda.core.TimeSeries
+.. autoclass:: tseda.core.timeseries.TimeSeries
    :members:
    :special-members: __init__, __repr__, __len__, __contains__, __getitem__
    :show-inheritance:
@@ -34,4 +31,3 @@ Validators
 
 .. automodule:: tseda.core.validator
    :members:
-   :undoc-members:

@@ -2,8 +2,6 @@ tseda.decomposition
 ===================
 
 .. automodule:: tseda.decomposition
-   :members:
-   :undoc-members:
 
 Result
 ------

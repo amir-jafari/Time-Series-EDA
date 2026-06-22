@@ -2,8 +2,6 @@ tseda.anomaly
 =============
 
 .. automodule:: tseda.anomaly
-   :members:
-   :undoc-members:
 
 Report
 ------

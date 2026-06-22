@@ -2,8 +2,6 @@ tseda.quality
 =============
 
 .. automodule:: tseda.quality
-   :members:
-   :undoc-members:
 
 Missing Values
 --------------

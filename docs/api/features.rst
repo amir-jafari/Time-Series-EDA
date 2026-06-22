@@ -2,8 +2,6 @@ tseda.features
 ==============
 
 .. automodule:: tseda.features
-   :members:
-   :undoc-members:
 
 Temporal Features
 -----------------

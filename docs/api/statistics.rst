@@ -2,8 +2,6 @@ tseda.statistics
 ================
 
 .. automodule:: tseda.statistics
-   :members:
-   :undoc-members:
 
 Descriptive Statistics
 ----------------------

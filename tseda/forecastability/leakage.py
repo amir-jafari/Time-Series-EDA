@@ -207,7 +207,7 @@ class LeakageDetector:
             *ts*, one column per feature.  When ``None`` the report is empty
             with a warning.
         target_corr_threshold : float, optional
-            |Pearson r| threshold above which a feature is flagged as
+            Pearson r threshold above which a feature is flagged as
             target-leaking.  Default ``0.95``.
 
         Returns

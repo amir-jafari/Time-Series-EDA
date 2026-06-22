@@ -1,9 +1,7 @@
 tseda.forecastability
-====================
+=====================
 
 .. automodule:: tseda.forecastability
-   :members:
-   :undoc-members:
 
 Forecastability Scorer
 ----------------------

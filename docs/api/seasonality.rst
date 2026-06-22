@@ -2,8 +2,6 @@ tseda.seasonality
 =================
 
 .. automodule:: tseda.seasonality
-   :members:
-   :undoc-members:
 
 Report
 ------
