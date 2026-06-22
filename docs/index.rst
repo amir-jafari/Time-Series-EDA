@@ -3,30 +3,18 @@
 tseda — Time Series EDA
 ========================
 
-**Version:** |release| · **License:** MIT
-
 *"Understand your time series before you forecast it."*
 
-tseda is a comprehensive, dependency-light Python toolkit that provides the
-time-series equivalent of `YData-Profiling
-<https://docs.profiling.ydata.ai/>`_ for tabular data.  A single call
-produces a complete picture of your data: quality diagnostics,
-statistical properties, seasonality, anomalies, structural breaks,
-forecastability scores, and a model-recommendation report.
-
-.. code-block:: python
-
-   import numpy as np, pandas as pd
-   from tseda import TimeSeries
-
-   idx = pd.date_range("2020-01-01", periods=365, freq="D")
-   ts  = TimeSeries(np.cumsum(np.random.randn(365)), index=idx,
-                    name="returns", unit="USD")
-   print(ts)
+tseda is a comprehensive, dependency-light Python toolkit for time series
+Exploratory Data Analysis (EDA).  A single call produces a complete picture
+of your data: quality diagnostics, statistical properties, seasonality,
+anomalies, structural breaks, forecastability scores, and a model-recommendation
+report — before you write a single forecasting model.
 
 .. toctree::
    :maxdepth: 2
    :caption: User Guide
+   :hidden:
 
    user_guide/installation
    user_guide/quickstart
@@ -42,8 +30,23 @@ forecastability scores, and a model-recommendation report.
    user_guide/reports
 
 .. toctree::
+   :maxdepth: 2
+   :caption: Example Notebooks
+   :hidden:
+
+   examples/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Sample Reports
+   :hidden:
+
+   reports/index
+
+.. toctree::
    :maxdepth: 3
    :caption: API Reference
+   :hidden:
 
    api/core
    api/quality
@@ -58,20 +61,9 @@ forecastability scores, and a model-recommendation report.
    api/report
 
 .. toctree::
-   :maxdepth: 2
-   :caption: Examples
-
-   examples/index
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Sample Reports
-
-   reports/index
-
-.. toctree::
    :maxdepth: 1
    :caption: Development
+   :hidden:
 
    changelog
    contributing

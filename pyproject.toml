@@ -71,6 +71,8 @@ docs = [
     "sphinx-copybutton>=0.5",
     "nbsphinx>=0.9",
     "ipykernel>=6.0",
+    "sphinx-design>=0.5",
+    "myst-parser>=3.0",
 ]
 
 # Convenience meta-extra that pulls everything.
