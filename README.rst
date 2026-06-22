@@ -50,19 +50,19 @@ Installation
 
 .. code-block:: bash
 
-   pip install tseda
+   pip install timeseries-eda
 
 For stationarity tests that use statsmodels (ADF, KPSS, Phillips-Perron):
 
 .. code-block:: bash
 
-   pip install tseda[stats]
+   pip install timeseries-eda[stats]
 
 For building the documentation:
 
 .. code-block:: bash
 
-   pip install tseda[docs]
+   pip install timeseries-eda[docs]
 
 ----
 
@@ -151,7 +151,7 @@ Dependencies
 
 **Optional**:
 
-* ``statsmodels >= 0.14`` — ADF, KPSS, Phillips-Perron, STL (``pip install tseda[stats]``)
+* ``statsmodels >= 0.14`` — ADF, KPSS, Phillips-Perron, STL (``pip install timeseries-eda[stats]``)
 
 ----
 

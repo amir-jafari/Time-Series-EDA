@@ -10,7 +10,7 @@ approach because it:
 * Handles any period length, including non-integer values.
 
 **Primary path** — delegates to :class:`statsmodels.tsa.seasonal.STL` when
-``statsmodels`` is installed (``pip install tseda[stats]``).
+``statsmodels`` is installed (``pip install timeseries-eda[stats]``).
 
 **Fallback path** — when ``statsmodels`` is absent, a simplified iterative
 decomposition is used:

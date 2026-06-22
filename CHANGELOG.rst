@@ -6,6 +6,14 @@ This project follows `Semantic Versioning <https://semver.org/>`_.
 
 ----
 
+0.1.3 (2026-06-22)
+-------------------
+
+Fix incorrect PyPI install command in README and STL docstring
+(``pip install tseda`` → ``pip install timeseries-eda``).
+
+----
+
 0.1.2 (2026-06-22)
 -------------------
 
