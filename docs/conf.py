@@ -2,10 +2,35 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 import os
+import shutil
 import sys
+from pathlib import Path
 
 # Make the package importable without installing it.
 sys.path.insert(0, os.path.abspath(".."))
+
+# ---------------------------------------------------------------------------
+# Copy external artefacts into the docs source tree at build time.
+# This keeps notebooks and generated HTML reports in their natural locations
+# (notebooks/ and notebooks/html/) without hard-coding copies in the repo.
+# ---------------------------------------------------------------------------
+_ROOT  = Path(__file__).parent.parent
+_DOCS  = Path(__file__).parent
+
+# Notebook → docs/examples/ (nbsphinx reads it from there)
+_NB_SRC = _ROOT / "notebooks" / "Global_Air_Pollution_EDA.ipynb"
+_NB_DST = _DOCS / "examples"
+if _NB_SRC.exists():
+    _NB_DST.mkdir(exist_ok=True)
+    shutil.copy2(_NB_SRC, _NB_DST / _NB_SRC.name)
+
+# HTML reports → docs/_static/reports/ (served as static files)
+_HTML_SRC = _ROOT / "notebooks" / "html"
+_HTML_DST = _DOCS / "_static" / "reports"
+if _HTML_SRC.exists():
+    _HTML_DST.mkdir(parents=True, exist_ok=True)
+    for _f in _HTML_SRC.glob("*.html"):
+        shutil.copy2(_f, _HTML_DST / _f.name)
 
 # ---------------------------------------------------------------------------
 # Project information
@@ -26,7 +51,12 @@ extensions = [
     "sphinx_copybutton",            # copy button on code blocks
     "sphinx.ext.mathjax",           # LaTeX math rendering
     "sphinx.ext.githubpages",       # .nojekyll file for GitHub Pages
+    "nbsphinx",                     # render Jupyter notebooks
 ]
+
+# nbsphinx: never re-execute notebooks during CI — use stored outputs if
+# present, show source cells only if not.
+nbsphinx_execute = "never"
 
 templates_path   = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]

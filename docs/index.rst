@@ -58,6 +58,18 @@ forecastability scores, and a model-recommendation report.
    api/report
 
 .. toctree::
+   :maxdepth: 2
+   :caption: Examples
+
+   examples/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Sample Reports
+
+   reports/index
+
+.. toctree::
    :maxdepth: 1
    :caption: Development
 
