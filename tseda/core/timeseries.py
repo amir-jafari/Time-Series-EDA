@@ -108,9 +108,12 @@ def _infer_freq(index: pd.DatetimeIndex) -> Optional[str]:
     if freq is not None:
         return freq
 
-    # Median gap in seconds — use .asi8 (always int64 nanoseconds, no deprecation)
+    # Median gap in seconds — compute via timedelta so result is unit-independent
+    # (pandas 2.2+ uses second-resolution DatetimeIndex for day-level freq, so
+    # asi8 / astype(int64) is no longer guaranteed to be nanoseconds).
     try:
-        gaps_s = np.diff(index.asi8) / 1e9  # ns → s
+        gaps_td = np.diff(index.to_numpy())            # timedelta64[*]
+        gaps_s  = gaps_td / np.timedelta64(1, "s")    # → float seconds
         median_s = float(np.median(gaps_s))
     except Exception:
         return None
