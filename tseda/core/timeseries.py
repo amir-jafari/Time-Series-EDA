@@ -410,8 +410,8 @@ class TimeSeries:
         """Return ``True`` when all consecutive time gaps are identical."""
         if len(self._data) < 2:
             return True
-        gaps_ns = np.diff(self._data.index.astype(np.int64))
-        return bool(np.all(gaps_ns == gaps_ns[0]))
+        gaps_td = np.diff(self._data.index.to_numpy())   # timedelta64[*] — unit-agnostic
+        return bool(np.all(gaps_td == gaps_td[0]))
 
     def _copy_with(self, new_data: pd.Series, **meta_overrides) -> "TimeSeries":
         """Return a new :class:`TimeSeries` sharing metadata with *self*."""

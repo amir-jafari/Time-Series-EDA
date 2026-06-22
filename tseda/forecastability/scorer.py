@@ -222,11 +222,11 @@ def _has_large_gaps(ts: TimeSeries) -> bool:
     """Return True if any time gap exceeds 3× the median gap."""
     if ts.n < 3:
         return False
-    gaps = np.diff(ts.index.astype(np.int64))
-    median_gap = float(np.median(gaps))
-    if median_gap <= 0:
+    gaps_td = np.diff(ts.index.to_numpy())        # timedelta64[*] — unit-agnostic
+    median_gap = np.median(gaps_td)
+    if median_gap <= np.timedelta64(0):
         return False
-    return bool(np.any(gaps > 3 * median_gap))
+    return bool(np.any(gaps_td > 3 * median_gap))
 
 
 # ---------------------------------------------------------------------------

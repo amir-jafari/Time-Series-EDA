@@ -371,27 +371,24 @@ class ChangepointDetector:
         h = threshold * sigma
         k = drift    # allowance (no sigma scaling — drift is already a fraction)
 
-        S_pos, S_neg = _cusum_arrays(x, mu, sigma, k, h)
-
-        # Detect signals and reset
+        # Accumulate CUSUM incrementally with inline reset so every position
+        # is evaluated correctly — including positions immediately after a signal.
         changepoints: List[int] = []
-        S_p, S_n = S_pos.copy(), S_neg.copy()
-        i = 1
-        while i < n:
-            if S_p[i] > h or S_n[i] > h:
+        S_p = np.zeros(n)
+        S_n = np.zeros(n)
+        sp, sn = 0.0, 0.0
+        for i in range(1, n):
+            sp = max(0.0, sp + (x[i] - mu) - k * sigma)
+            sn = max(0.0, sn - (x[i] - mu) - k * sigma)
+            S_p[i] = sp
+            S_n[i] = sn
+            if sp > h or sn > h:
                 changepoints.append(i)
-                # Reset from next observation
-                if i + 1 < n:
-                    S_p[i + 1] = 0.0
-                    S_n[i + 1] = 0.0
-                    S_p, S_n = _cusum_arrays(x[i + 1:], mu, sigma, k, h)
-                    S_p = np.concatenate([np.zeros(i + 1), S_p])
-                    S_n = np.concatenate([np.zeros(i + 1), S_n])
-            i += 1
+                sp, sn = 0.0, 0.0   # reset after each signal
 
-        # Scores: normalised max(S+, S−)
-        max_s  = max(float(S_pos.max()), float(S_neg.max()), 1e-10)
-        scores = np.maximum(S_pos, S_neg) / max_s
+        # Scores: normalised max(S+, S−) from the reset-adjusted arrays
+        max_s  = max(float(S_p.max()), float(S_n.max()), 1e-10)
+        scores = np.maximum(S_p, S_n) / max_s
 
         return _build_report(ts, changepoints, scores,
                              f"cusum(t={threshold},d={drift})")
@@ -558,10 +555,11 @@ class ChangepointDetector:
             if var_r <= 0:
                 var_r = 1e-12
 
-            # Two-sided F-test: always put larger variance in numerator
-            F    = max(var_l, var_r) / min(var_l, var_r)
-            df1  = nl - 1
-            df2  = nr - 1
+            # Two-sided F-test: df1 must match the group with the larger variance
+            if var_l >= var_r:
+                F, df1, df2 = var_l / var_r, nl - 1, nr - 1
+            else:
+                F, df1, df2 = var_r / var_l, nr - 1, nl - 1
             pval = float(2 * sp_stats.f.sf(F, df1, df2))
 
             scores[t] = 1.0 - pval

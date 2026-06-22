@@ -344,6 +344,10 @@ class MissingValueAnalyzer:
 
         if method == "linear":
             filled = series.interpolate(method="index", limit=limit)
+            # pandas interpolate(method='index') leaves leading/trailing NaN;
+            # fill them with nearest boundary value when no limit is imposed.
+            if limit is None:
+                filled = filled.ffill().bfill()
         elif method == "forward":
             filled = series.ffill(limit=limit)
         elif method == "backward":

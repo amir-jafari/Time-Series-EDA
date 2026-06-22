@@ -173,41 +173,47 @@ def _adf_native(
     dx = np.diff(x)
     n  = len(dx)
 
+    # Fix sample to maxlag+1 so AIC is comparable across lag orders
+    # (all models estimated on the same T observations).
+    start = maxlag + 1
+    T     = n - start
+    if T <= 1:
+        start = 1
+        T = n - 1
+
+    y_all    = dx[start:]               # length T — same for every lag model
+    x_level  = x[maxlag : n - 1]       # lagged level, length T
+
+    def _build_regs(lag: int) -> list:
+        regs = [x_level]
+        if regression in ("c", "ct"):
+            regs.append(np.ones(T))
+        if regression == "ct":
+            regs.append(np.arange(T, dtype=float))
+        for k in range(1, lag + 1):
+            # k-th lagged difference, length T
+            regs.append(dx[maxlag + 1 - k : n - k])
+        return regs
+
     # Lag selection via AIC (Akaike Information Criterion)
     best_aic = np.inf
     best_lag = 0
     for lag in range(0, maxlag + 1):
-        start  = lag + 1
-        y      = dx[start:]
-        regs   = [x[start - 1 : n - (lag if lag else 0)]]  # lagged level
-        if regression in ("c", "ct"):
-            regs.append(np.ones(len(y)))
-        if regression == "ct":
-            regs.append(np.arange(len(y), dtype=float))
-        for k in range(1, lag + 1):
-            regs.append(dx[start - k : n - (lag - k) if lag - k else None])
-        X   = np.column_stack(regs) if len(regs) > 1 else regs[0].reshape(-1, 1)
-        _, resid, s2 = _ols(y, X)
+        regs = _build_regs(lag)
+        X    = np.column_stack(regs) if len(regs) > 1 else regs[0].reshape(-1, 1)
+        _, resid, s2 = _ols(y_all, X)
         k_params = X.shape[1]
-        aic = len(y) * np.log(s2 + 1e-15) + 2 * k_params
+        aic = T * np.log(s2 + 1e-15) + 2 * k_params   # fixed T — AIC comparable
         if aic < best_aic:
             best_aic = aic
             best_lag = lag
 
     # Final regression with best lag
-    lag    = best_lag
-    start  = lag + 1
-    y      = dx[start:]
-    regs   = [x[start - 1 : n - (lag if lag else 0)]]
-    if regression in ("c", "ct"):
-        regs.append(np.ones(len(y)))
-    if regression == "ct":
-        regs.append(np.arange(len(y), dtype=float))
-    for k in range(1, lag + 1):
-        regs.append(dx[start - k : n - (lag - k) if lag - k else None])
-    X = np.column_stack(regs) if len(regs) > 1 else regs[0].reshape(-1, 1)
+    lag  = best_lag
+    regs = _build_regs(lag)
+    X    = np.column_stack(regs) if len(regs) > 1 else regs[0].reshape(-1, 1)
 
-    beta, resid, s2 = _ols(y, X)
+    beta, resid, s2 = _ols(y_all, X)
     XtX_inv = np.linalg.pinv(X.T @ X)
     se      = np.sqrt(np.diag(XtX_inv) * s2)
     t_stat  = float(beta[0] / se[0]) if se[0] > 0 else float("nan")

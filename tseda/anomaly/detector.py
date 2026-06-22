@@ -275,23 +275,19 @@ class AnomalyDetector:
         lower = q1 - k * iqr
         upper = q3 + k * iqr
 
-        vals = ts.values
-        mask = np.zeros(ts.n, dtype=bool)
-        scores = np.zeros(ts.n, dtype=float)
+        vals   = ts.values
+        lo_arr = lower.to_numpy()
+        hi_arr = upper.to_numpy()
+        iqr_arr = hi_arr - lo_arr
 
-        for i in range(ts.n):
-            v = vals[i]
-            if np.isnan(v) or np.isnan(lower.iloc[i]) or np.isnan(upper.iloc[i]):
-                continue
-            lo, hi = float(lower.iloc[i]), float(upper.iloc[i])
-            if v < lo:
-                mask[i] = True
-                iqr_val = hi - lo
-                scores[i] = min(1.0, (lo - v) / (iqr_val + 1e-10))
-            elif v > hi:
-                mask[i] = True
-                iqr_val = hi - lo
-                scores[i] = min(1.0, (v - hi) / (iqr_val + 1e-10))
+        valid  = ~(np.isnan(vals) | np.isnan(lo_arr) | np.isnan(hi_arr))
+        below  = valid & (vals < lo_arr)
+        above  = valid & (vals > hi_arr)
+        mask   = below | above
+
+        scores = np.zeros(ts.n, dtype=float)
+        scores[below] = np.minimum(1.0, (lo_arr[below] - vals[below]) / (iqr_arr[below] + 1e-10))
+        scores[above] = np.minimum(1.0, (vals[above]   - hi_arr[above]) / (iqr_arr[above] + 1e-10))
 
         return _build_report(ts, mask, scores, f"rolling_iqr(w={window},k={k})")
 
@@ -356,20 +352,14 @@ class AnomalyDetector:
         mu   = s.rolling(window, center=center, min_periods=mp).mean()
         sigma = s.rolling(window, center=center, min_periods=mp).std(ddof=1)
 
-        vals = ts.values
-        mask  = np.zeros(ts.n, dtype=bool)
-        scores = np.zeros(ts.n, dtype=float)
+        vals   = ts.values
+        mu_arr = mu.to_numpy()
+        sg_arr = sigma.to_numpy()
 
-        for i in range(ts.n):
-            v = vals[i]
-            m = float(mu.iloc[i])
-            sg = float(sigma.iloc[i])
-            if np.isnan(v) or np.isnan(m) or np.isnan(sg) or sg == 0:
-                continue
-            z = abs(v - m) / sg
-            if z > threshold:
-                mask[i] = True
-                scores[i] = min(1.0, (z - threshold) / (threshold + 1e-10))
+        valid  = ~(np.isnan(vals) | np.isnan(mu_arr) | np.isnan(sg_arr) | (sg_arr == 0))
+        z      = np.where(valid, np.abs(vals - mu_arr) / (sg_arr + 1e-300), 0.0)
+        mask   = valid & (z > threshold)
+        scores = np.where(mask, np.minimum(1.0, (z - threshold) / (threshold + 1e-10)), 0.0)
 
         return _build_report(ts, mask, scores, f"rolling_z(w={window},t={threshold})")
 
@@ -547,7 +537,12 @@ class AnomalyDetector:
         """
         ts = self._validate(ts)
         from tseda.quality.outliers import OutlierDetector
-        od_report = OutlierDetector().gesd(ts, alpha=alpha, max_outliers=max_outliers)
+        n_finite = int(np.sum(~np.isnan(ts.values)))
+        safe_max = min(max_outliers, n_finite // 2 - 1)
+        if safe_max < 1:
+            return _build_report(ts, np.zeros(ts.n, dtype=bool),
+                                 np.zeros(ts.n), f"gesd(alpha={alpha})")
+        od_report = OutlierDetector().gesd(ts, alpha=alpha, max_outliers=safe_max)
 
         # Build continuous scores: |z-score| normalised to [0,1]
         vals   = ts.values.copy()
