@@ -240,8 +240,9 @@ def plot_monthly_boxplots(
     if not groups:
         ax.text(0.5, 0.5, "No data", transform=ax.transAxes, ha="center")
     else:
-        bp = ax.boxplot(groups, labels=labels, patch_artist=True,
+        bp = ax.boxplot(groups, patch_artist=True,
                         medianprops={"color": PALETTE["anomaly"]})
+        ax.set_xticklabels(labels)
         for patch in bp["boxes"]:
             patch.set_facecolor(PALETTE["seasonal"])
             patch.set_alpha(0.5)

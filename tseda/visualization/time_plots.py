@@ -275,8 +275,9 @@ def plot_annual_boxplots(
         ax.text(0.5, 0.5, "No data", transform=ax.transAxes, ha="center")
     else:
         labels, data = zip(*groups_nonempty)
-        bp = ax.boxplot(data, labels=labels, patch_artist=True,
+        bp = ax.boxplot(data, patch_artist=True,
                         medianprops={"color": PALETTE["anomaly"]})
+        ax.set_xticklabels(labels)
         for patch in bp["boxes"]:
             patch.set_facecolor(PALETTE["accent"])
             patch.set_alpha(0.6)
