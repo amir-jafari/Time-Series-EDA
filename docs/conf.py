@@ -41,7 +41,7 @@ if _HTML_SRC.exists():
 project   = "tseda"
 author    = "Amirhossein Jafari"
 copyright = "2026, Amirhossein Jafari"
-release   = "0.1.0"
+release   = "0.1.2"
 version   = "0.1"
 
 # ---------------------------------------------------------------------------

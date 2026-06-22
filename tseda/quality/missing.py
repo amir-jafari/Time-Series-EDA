@@ -271,7 +271,8 @@ class MissingValueAnalyzer:
             Interpolation strategy.  One of:
 
             * ``"linear"``   — linear interpolation between neighbours
-              (default).
+              (default).  Leading and trailing NaN are filled with the
+              nearest observed boundary value when *limit* is ``None``.
             * ``"forward"``  — forward-fill (carry last observed value).
             * ``"backward"`` — backward-fill (carry next observed value).
             * ``"nearest"``  — fill with the nearest non-NaN value.
